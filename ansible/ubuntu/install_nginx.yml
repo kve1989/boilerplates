@@ -1,0 +1,43 @@
+---
+- hosts: all
+  become: true
+
+  vars:
+    - keyring: /usr/share/keyrings/nginx-archive-keyring.gpg
+    - os: ubuntu
+    - release: focal
+
+  tasks:
+    - name: Update the repository cache and Update all packages to their latest version
+      apt:
+        name: "*"
+        state: latest
+        update_cache: yes
+        autoremove: yes
+        cache_valid_time: 3600
+
+    - name: Install prerequisites
+      apt:
+        name:
+          - curl
+          - gnupg2
+          - ca-certificates
+          - lsb-release
+          - ubuntu-keyring
+          - debian-archive-keyring
+
+    - name: add apt-key
+      apt_key:
+        url: https://nginx.org/keys/nginx_signing.key
+        keyring: "{{ keyring }}"
+
+    - name: Add repo nginx stable
+      apt_repository:
+        repo: 'deb [signed-by={{ keyring }}] http://nginx.org/packages/{{ os }} {{ release }} nginx'
+        state: present
+
+    - name: Install nginx
+      apt:
+        name:
+        - nginx
+        update_cache: yes
