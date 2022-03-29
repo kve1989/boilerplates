@@ -1,0 +1,9 @@
+[centos_linux]
+example ansible_host=192.168.0.1
+
+[debian_linux]
+example ansible_host=192.168.0.1
+
+[all_linux:children]
+centos_linux
+debian_linux
