@@ -1,0 +1,13 @@
+---
+- hosts: debian_linux
+  become: yes
+
+  vars:
+    debian_release_name: bullseye
+
+  tasks:
+  - name: copy source.list
+    template: src=templates/sources.list.j2 dest=/etc/apt/sources.list mode=0644
+    register: out
+
+  - debug: msg="{{ out.stdout }}"
