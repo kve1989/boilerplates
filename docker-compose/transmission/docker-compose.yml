@@ -18,6 +18,7 @@ services:
       - TZ=Asia/Yekaterinburg
       - USER=${transmission_user}
       - PASS=${transmission_pass}
+      - TRANSMISSION_WEB_HOME=/transmission-web-control/
     volumes:
       - transmission_data:/config
       - /mnt/data:/downloads
